@@ -25,61 +25,54 @@ h1 {
 	<script src="webOSjs-0.1.0/webOS.js" charset="utf-8"></script>
 	<script type="text/javascript">
 	   //sample code for calling LS2 API
-       var lunaReq= webOS.service.request("luna://com.webos.service.ai.voice",      //showing state of voice recognition(idle,waitActivation....
-        {
-            method:"getState",
-            parameters:{
-				"subscribe": true
-			},
-            onSuccess: function (args) {
-				document.getElementById("title").innerHTML = args.returnValue + " " + args.state;  //show state
-            },
-            onFailure: function (args) {
-				document.getElementById("title").innerHTML = args.returnValue; 
-            }
-        });
-		var lunaReq2= webOS.service.request("luna://com.webos.service.ai.voice",   //showing response of voice recognition
+	//    var lunaReqStart = webOS.service.request("luna://com.webos.service.ai.voice",{
+	// 	   method:"start",
+	// 	   parameters:{
+	// 		   "mode":"continuous",
+	// 		   "keywordDetect":true
+	// 	   },
+	// 	   onSuccess: function (args) {
+	// 			document.getElementById("check").innerHTML = "success";
+	// 	   },
+	// 	   onFailure: function (args) {
+	// 			document.getElementById("check").innerHTMl = args.errorCode + " " + args.errorText;
+	// 	   }
+	//    })
+    //    var lunaReq= webOS.service.request("luna://com.webos.service.ai.voice",
+    //     {
+    //         method:"getState",
+    //         parameters:{
+	// 			"subscribe": true
+	// 		},
+    //         onSuccess: function (args) {
+	// 			document.getElementById("title").innerHTML = args.returnValue + " " + args.subscribed + " " + args.state;
+    //         },
+    //         onFailure: function (args) {
+	// 			document.getElementById("title").innerHTML = args.errorCode + " " + args.errorText;
+    //         }
+    //     });
+		var lunaReq= webOS.service.request("luna://com.webos.service.ai.voice",
 		{
 			method:"getResponse",
 			parameters:{
-				"susbscribe" :true
+				"subscribe" :true
 			},
 			onSuccess: function (args){
-				if(args.response!=undefined){
-					document.getElementById("response").innerHTML = args.returnValue + " " + args.response;
-				}
-				document.getElementById("response").innerHTML = args.returnValue + " " + args.provider;
+				document.getElementById("response").innerHTML = args.returnValue + " " + args.provider + " " + args.subscribed + " " + args.response;
 			},
 			onFailure: function (args){
-				document.getElementById("response").innerHTML = args.returnValue;
+				document.getElementById("response").innerHTML = args.errorCode + " " + args.errorText;
 			}
 		})
+
+		
 	</script>
 </head>
 <body>
 	<div>
-		<h1 id="title">state</h1>  
-		<h1 id="response">response</h1> 
-		<input type="button" id="start"  value="start"/>
-		<script>
-			var s = document.getElementById("start");
-			s.addEventListener('click',function(event){
-				var lunaReq3 = webOS.service.request("luna://com.webos.service.ai.voice",
-				{
-					mehtod:"start",
-					parameters:{
-						"mode":"continuous",
-						"keywordDetect":true
-					},
-					onSuccess: function (args){
-						alert('started');
-					},
-					onFailure: function (args){
-						alert(args.returnValue);
-					}
-				})
-			})	
-		</script>
+		<h1 id="title">state</h1>
+		<h1 id="response">response</h1>
+		<h1 id="check">check</h1>
 	</div>
 </body>
 </html>
