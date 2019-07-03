@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style type="text/css">
+body {
+		width: 100%;
+		height: 100%;
+		background-color: #202020;
+}
+
+div {
+	    position:absolute;
+		height:100%;
+		width:100%;
+		display: table;
+}
+
+h1 {
+	    display: table-cell;
+		vertical-align: middle;
+		text-align:center;
+		color: #FFFFFF;
+}
+</style>
+	<script src="webOSjs-0.1.0/webOS.js" charset="utf-8"></script>
+	<script type="text/javascript">
+	   //sample code for calling LS2 API
+       var lunaReq= webOS.service.request("luna://com.webos.service.ai.voice",
+        {
+            method:"getState",
+            parameters:{
+				"subscribe": true
+			},
+            onSuccess: function (args) {
+				document.getElementById("title").innerHTML = args.returnValue + " " + args.state;
+            },
+            onFailure: function (args) {
+				document.getElementById("title").innerHTML = args.returnValue;
+            }
+        });
+		var lunaReq2= webOS.service.request("luna://com.webos.service.ai.voice",
+		{
+			method:"getResponse",
+			parameters:{
+				"susbscribe" :true
+			},
+			onSuccess: function (args){
+				if(args.response!=undefined){
+					document.getElementById("response").innerHTML = args.returnValue + " " + args.response;
+				}
+				document.getElementById("response").innerHTML = args.returnValue + " " + args.provider;
+			},
+			onFailure: function (args){
+				document.getElementById("response").innerHTML = args.returnValue;
+			}
+		})
+	</script>
+</head>
+<body>
+	<div>
+		<h1 id="title">state</h1>
+		<h1 id="response">response</h1>
+		<input type="button" id="start"  value="start"/>
+		<script>
+			var s = document.getElementById("start");
+			s.addEventListener('click',function(event){
+				var lunaReq3 = webOS.service.request("luna://com.webos.service.ai.voice",
+				{
+					mehtod:"start",
+					parameters:{
+						"mode":"continuous",
+						"keywordDetect":true
+					},
+					onSuccess: function (args){
+						alert('started');
+					},
+					onFailure: function (args){
+						alert(args.returnValue);
+					}
+				})
+			})	
+		</script>
+	</div>
+</body>
+</html>
