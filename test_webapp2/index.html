@@ -25,20 +25,20 @@ h1 {
 	<script src="webOSjs-0.1.0/webOS.js" charset="utf-8"></script>
 	<script type="text/javascript">
 	   //sample code for calling LS2 API
-       var lunaReq= webOS.service.request("luna://com.webos.service.ai.voice",
+       var lunaReq= webOS.service.request("luna://com.webos.service.ai.voice",      //showing state of voice recognition(idle,waitActivation....
         {
             method:"getState",
             parameters:{
 				"subscribe": true
 			},
             onSuccess: function (args) {
-				document.getElementById("title").innerHTML = args.returnValue + " " + args.state;
+				document.getElementById("title").innerHTML = args.returnValue + " " + args.state;  //show state
             },
             onFailure: function (args) {
-				document.getElementById("title").innerHTML = args.returnValue;
+				document.getElementById("title").innerHTML = args.returnValue; 
             }
         });
-		var lunaReq2= webOS.service.request("luna://com.webos.service.ai.voice",
+		var lunaReq2= webOS.service.request("luna://com.webos.service.ai.voice",   //showing response of voice recognition
 		{
 			method:"getResponse",
 			parameters:{
@@ -58,8 +58,8 @@ h1 {
 </head>
 <body>
 	<div>
-		<h1 id="title">state</h1>
-		<h1 id="response">response</h1>
+		<h1 id="title">state</h1>  
+		<h1 id="response">response</h1> 
 		<input type="button" id="start"  value="start"/>
 		<script>
 			var s = document.getElementById("start");
