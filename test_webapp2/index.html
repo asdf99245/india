@@ -7,65 +7,58 @@ body {
 		height: 100%;
 		background-color: #202020;
 }
-
 div {
 	    position:absolute;
 		height:100%;
 		width:100%;
 		display: table;
 }
-
+div#error {
+	color: red;
+	font-size: 20px;
+}
 h1 {
 	    display: table-cell;
 		vertical-align: middle;
 		text-align:center;
 		color: #FFFFFF;
 }
+p {
+		color : white;
+		font-size : 30px;
+}
 </style>
 	<script src="webOSjs-0.1.0/webOS.js" charset="utf-8"></script>
 	<script type="text/javascript">
 	   //sample code for calling LS2 API
-	//    var lunaReqStart = webOS.service.request("luna://com.webos.service.ai.voice",{
-	// 	   method:"start",
-	// 	   parameters:{
-	// 		   "mode":"continuous",
-	// 		   "keywordDetect":true
-	// 	   },
-	// 	   onSuccess: function (args) {
-	// 			document.getElementById("check").innerHTML = "success";
-	// 	   },
-	// 	   onFailure: function (args) {
-	// 			document.getElementById("check").innerHTMl = args.errorCode + " " + args.errorText;
-	// 	   }
-	//    })
-    //    var lunaReq= webOS.service.request("luna://com.webos.service.ai.voice",
-    //     {
-    //         method:"getState",
-    //         parameters:{
-	// 			"subscribe": true
-	// 		},
-    //         onSuccess: function (args) {
-	// 			document.getElementById("title").innerHTML = args.returnValue + " " + args.subscribed + " " + args.state;
-    //         },
-    //         onFailure: function (args) {
-	// 			document.getElementById("title").innerHTML = args.errorCode + " " + args.errorText;
-    //         }
-    //     });
-	var lunaReq= webOS.service.request("luna://com.webos.service.ai.voice",
+	var lunaReq= webOS.service.request("luna://com.webos.service.ai.voice",     //get state of voice recognition
+	{
+		method:"getState",
+		parameters:{
+			"subscribe": true
+		},
+		onSuccess: function (args) {
+			document.getElementById("title").innerHTML = "State : " + args.state;
+		},
+		onFailure: function (args) {
+			document.getElementById("title").innerHTML = args.errorCode + " " + args.errorText;
+		}
+	});
+	var lunaReq= webOS.service.request("luna://com.webos.service.ai.voice",    //get response of voice recognition
 	{
 		method:"getResponse",
 		parameters:{
 			"subscribe" :true
 		},
 		onSuccess: function (args){
-			document.getElementById("response").innerHTML = args.response.response;
+			document.getElementById("response").innerHTML = args.response;
 		},
 		onFailure: function (args){
 			document.getElementById("response").innerHTML = args.errorText;
 		}
 	})
-	function startVr (){
-		var lunaReqStart = webOS.service.request("luna://com.webos.service.ai.voice",
+	function startVr (){                              			//start voice recognition
+		var lunaReqStart = webOS.service.request("luna://com.webos.service.ai.voice", 
 		{
 			method:"start",
 			parameters:{
@@ -73,23 +66,23 @@ h1 {
 				"keywordDetect":true
 			},
 			onSuccess: function (args){
-			
+				document.getElementById("error").innerHTML = "Start succeed"
 			},
 			onFailure: function (args){
-
+				document.getElementById("error").innerHTML = "Start failed : " + args.errorText;
 			}
 		})
 	}
-	function stopVr (){
+	function stopVr (){							//stop voice recognition
 		var lunaReqStop = webOS.service.request("luna://com.webos.service.ai.voice",
 		{
 			method:"stop",
 			parameters:{},
 			onSuccess: function (args){
-
+				document.getElementById("error").innerHTML = "Stop succeed";
 			},
 			onFailure: function (args){
-				
+				document.getElementById("error").innerHTML = "Stop failed : " +args.errorText;
 			}
 		})
 	}
@@ -98,13 +91,21 @@ h1 {
 </head>
 <body>
 	<div>
-		<!-- <h1 id="title">state</h1> -->
-		<h1 id="response">response</h1>
-		<input type="button" id="start" value="startButton">
+		<h1 id="response">response</h1>					<!--showing result of voice recognition -->
+	</div>
+	<div>
+		<input type="button" id="start" value="startButton">		<!-- this is voice recognition start button -->
 		<script type="text/javascript">
 			var b = document.getElementById("start");
 			b.addEventListener('click',startVr);
 		</script>
+		<input type="button" id="stop" value="stopButton">		<!-- this is voice recognition stop button -->
+		<script type="text/javascript">
+			var b = document.getElementById("stop");
+			b.addEventListener('click',stopVr);
+		</script>
+		<div id="error"></div>						<!-- show error, when stop or start failed -->
+		<p id="state"></p>						<!-- show state of voice recognition on screen -->
 		<!-- <h1 id="check">check</h1> -->
 	</div>
 </body>
