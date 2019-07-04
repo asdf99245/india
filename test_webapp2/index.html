@@ -51,28 +51,61 @@ h1 {
 	// 			document.getElementById("title").innerHTML = args.errorCode + " " + args.errorText;
     //         }
     //     });
-		var lunaReq= webOS.service.request("luna://com.webos.service.ai.voice",
+	var lunaReq= webOS.service.request("luna://com.webos.service.ai.voice",
+	{
+		method:"getResponse",
+		parameters:{
+			"subscribe" :true
+		},
+		onSuccess: function (args){
+			document.getElementById("response").innerHTML = args.response.response;
+		},
+		onFailure: function (args){
+			document.getElementById("response").innerHTML = args.errorText;
+		}
+	})
+	function startVr (){
+		var lunaReqStart = webOS.service.request("luna://com.webos.service.ai.voice",
 		{
-			method:"getResponse",
+			method:"start",
 			parameters:{
-				"subscribe" :true
+				"mode":"continuous",
+				"keywordDetect":true
 			},
 			onSuccess: function (args){
-				document.getElementById("response").innerHTML = args.returnValue + " " + args.provider + " " + args.subscribed + " " + args.response;
+			
 			},
 			onFailure: function (args){
-				document.getElementById("response").innerHTML = args.errorCode + " " + args.errorText;
+
 			}
 		})
+	}
+	function stopVr (){
+		var lunaReqStop = webOS.service.request("luna://com.webos.service.ai.voice",
+		{
+			method:"stop",
+			parameters:{},
+			onSuccess: function (args){
 
+			},
+			onFailure: function (args){
+				
+			}
+		})
+	}
 		
 	</script>
 </head>
 <body>
 	<div>
-		<h1 id="title">state</h1>
+		<!-- <h1 id="title">state</h1> -->
 		<h1 id="response">response</h1>
-		<h1 id="check">check</h1>
+		<input type="button" id="start" value="startButton">
+		<script type="text/javascript">
+			var b = document.getElementById("start");
+			b.addEventListener('click',startVr);
+		</script>
+		<!-- <h1 id="check">check</h1> -->
 	</div>
 </body>
 </html>
