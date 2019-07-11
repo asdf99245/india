@@ -38,7 +38,42 @@ input {
 </style>
 	<script src="webOSjs-0.1.0/webOS.js" charset="utf-8"></script>
 	<script type="text/javascript">
-	   //sample code for calling LS2 API
+	
+	const TURN_ON_LIGHT = "turn on auto light"; 
+	const TURN_OFF_LIGHT = "turn off auto light";
+	const TURN_ON_TEMP = "turn on auto temperature control";
+	const TURN_OFF_TEMP = "turn off auto temperature control";
+	const FOLD_BED = "fold the bed";
+	const UNFOLD_BED = "unfold the bed";
+	
+	function identify(args){ //to identify what order is
+		switch(args){
+			case TURN_ON_TEMP:
+				document.getElementById("check").innerHTML = args.response.partial
+				$.get("http://192.168.43.238:80/",{command:1}); // send the data to esp8266 of arduino
+				break;
+			case TURN_OFF_LIGHT:
+				document.getElementById("check").innerHTML = args.response.partial
+				$.get("http://192.168.43.238:80/",{command:2});
+				break;
+			case TURN_ON_LIGHT:
+				document.getElementById("check").innerHTML = args.response.partial;
+				$.get("http://192.168.43.238:80/",{command:3});
+				break;
+			case TURN_OFF_LIGHT:
+				document.getElementById("check").innerHTML = args.response.partial;
+				$.get("http://192.168.43.238:80/",{command:4});
+				break;
+			case FOLD_BED :
+				document.getElementById("check").innerHTML = args.response.partial
+				$.get("http://192.168.43.238:80/",{command:5});
+			case UNFOLD_BED :
+				document.getElementById("check").innerHTML = args.response.partial
+				$.get("http://192.168.43.238:80/",{command:6});
+			default : break;
+		}
+	}
+		
 	var lunaReq= webOS.service.request("luna://com.webos.service.ai.voice",     //get state of voice recognition
 	{
 		method:"getState",
