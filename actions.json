@@ -1,0 +1,100 @@
+{
+    "locale":"en",
+	"manifest":{
+		"displayName":"webOS OSE",
+		"invocationName":"webOS OSE",
+		"category":"PRODUCTIVITY"
+    },
+    "actions":[
+        {
+            "name":"com.webos.actions.Launch",
+            "availability":{
+                "deviceClasses":[
+                    {
+						"assistantSdkDevice":{}
+					}
+                ]
+            },
+            "intent":{
+                "name":"com.webos.intents.Launch",
+                "parameters":[
+                    {
+                        "name":"appName",
+                        "type":"AppName"
+                    },
+                    {
+                        "name":"appAction",
+                        "type":"AppAction"
+                    }
+                ],
+                "trigger":{
+					"queryPatterns":[
+						"($AppAction:appAction)? $AppName:appName",
+						"launch $AppName:appName",
+						"begin $AppName:appName",
+						"go to $AppName:appName"
+					]
+				}
+            },
+            "fulfillment":{
+                "staticFulfillment":{
+                    "templatedResponse":{
+                        "items":[
+                            {
+                                "simpleResponse":{
+                                    "textToSpeech":"Okay launching $appName for you ~"
+                                }
+                            },
+                            {
+								"deviceExecution":{
+									"command":"com.webos.commands.Launch",
+									"params":{
+										"appName":"$appName",
+										"appAction":"$appAction"
+									}
+								}
+							}
+                        ]
+                    }
+                }
+            }
+        }
+    ],
+    "types":[
+        {
+			"name":"$AppName",
+			"entities":[
+				{
+					"key":"YOUTUBE",
+					"synonyms":[
+						"youtube",
+						"yutube",
+						"utube",
+						"you tube"
+					]
+				},
+				{
+					"key":"BROWSER",
+					"synonyms":[
+						"web browser",
+						"search",
+						"browser"
+					]
+				}
+			]
+        },
+        {
+			"name":"$AppAction",
+			"entities":[
+				{
+					"key":"SEARCH",
+					"synonyms":[
+						"search",
+						"find"
+					]
+				}
+			]
+		}
+    ]
+
+}
